@@ -4,7 +4,7 @@ const PostWidget = () => {
   return (
     <div>
         PostWidget
-        </div>
+    </div>
   )
 }
 
