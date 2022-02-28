@@ -22,7 +22,7 @@ export const getPosts = async () => {
             title
             excerpt
             featuredImage {
-                url
+            url
             }
             categories {
                 name
