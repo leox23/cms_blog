@@ -5,15 +5,18 @@ dentro de /api/* para ser tratada como una
 API endpoint en ves de como una pagina
 ######################################################################
 */
-import { GraphQLClient, gql} from "graphql"
+import { GraphQLClient, gql} from "graphql-request"
 
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
+const graphcmsToken = process.env.GRAPHCMS_TOKEN;
 
 export default async function comments(req, res) {
+  console.log({graphcmsToken})
+
   const graphQLClient = new GraphQLClient(graphqlAPI, {
     headers: {
-      autorization: `Bearer ${process.env.GRAPHCMS_TOKEN}`,
-    },
+      autorization: `Bearer ${graphcmsToken}`
+    }
   });
 
   const query = gql`
@@ -22,7 +25,12 @@ export default async function comments(req, res) {
     }
   `
 
-  const result = await graphQLClient.request(query, req.body)
+  try {
+    const result = await graphQLClient.request(query, req.body)
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send(error)
+    }
 
-  return res.status(200).send(result);
 }
